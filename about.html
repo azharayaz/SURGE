@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Surge</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <canvas id="particles"></canvas>
+    <header>
+        <div class="logo">SURGE</div>
+        <nav>
+            <ul>
+                <li><a href="index.html">HOME</a></li>
+                <li><a href="about.html">ABOUT</a></li>
+                <li><a href="products.html">PRODUCTS</a></li>
+                <li><a href="info.html">INFO</a></li>
+            </ul>
+        </nav>
+        <div class="shop-now">
+            <a href="#" class="button">SHOP NOW</a>
+        </div>
+    </header>
+
+    <main class="about-main">
+        <section class="content about-content">
+            <h1 class="drink-name">ABOUT SURGE</h1>
+            <p class="description about-intro">
+                Welcome to SURGE, where we redefine energy. Our mission is to provide you with the ultimate fuel to conquer your day, push your limits, and achieve your goals.
+            </p>
+
+            <div class="about-grid">
+                <div class="about-card">
+                    <h2 class="about-card-title">OUR MISSION</h2>
+                    <p class="description">
+                        Each can of SURGE is packed with a powerful blend of high-quality ingredients, designed to deliver a clean and sustained energy boost without the crash. We believe energy should feel electric, not artificial.
+                    </p>
+                </div>
+                <div class="about-card">
+                    <h2 class="about-card-title">THE FORMULA</h2>
+                    <p class="description">
+                        Our proprietary blend combines natural caffeine, B-vitamins, taurine, and electrolytes. Zero sugar, zero compromise. Every ingredient is chosen for maximum performance and clean energy delivery.
+                    </p>
+                </div>
+                <div class="about-card">
+                    <h2 class="about-card-title">BOLD FLAVORS</h2>
+                    <p class="description">
+                        From the electric citrus of VOLT to the arctic chill of FROST, each flavor is crafted to excite your taste buds. We don't do boring — every sip is an experience.
+                    </p>
+                </div>
+                <div class="about-card">
+                    <h2 class="about-card-title">FOR EVERYONE</h2>
+                    <p class="description">
+                        Whether you're an athlete, a gamer, a student pulling an all-nighter, or just someone who needs a boost — SURGE is built for you. Fuel your grind, whatever it looks like.
+                    </p>
+                </div>
+            </div>
+
+            <div class="about-stats-section">
+                <h2 class="about-section-title">SURGE BY THE NUMBERS</h2>
+                <div class="about-stats">
+                    <div class="about-stat">
+                        <span class="about-stat-value">8</span>
+                        <span class="about-stat-label">UNIQUE FLAVORS</span>
+                    </div>
+                    <div class="about-stat">
+                        <span class="about-stat-value">0G</span>
+                        <span class="about-stat-label">SUGAR</span>
+                    </div>
+                    <div class="about-stat">
+                        <span class="about-stat-value">50+</span>
+                        <span class="about-stat-label">COUNTRIES</span>
+                    </div>
+                    <div class="about-stat">
+                        <span class="about-stat-value">1M+</span>
+                        <span class="about-stat-label">CANS SOLD</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const canvas = document.getElementById('particles');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        let hue = 120;
+        let particleColor = '#00ff00';
+        const nodes = [];
+        const NODE_COUNT = 50;
+        const CONNECT_DIST = 150;
+        let mouse = { x: -1000, y: -1000 };
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = document.body.scrollHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY + window.scrollY;
+        });
+
+        class Node {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 1;
+                this.baseSpeedX = (Math.random() - 0.5) * 0.4;
+                this.baseSpeedY = (Math.random() - 0.5) * 0.4;
+                this.speedX = this.baseSpeedX;
+                this.speedY = this.baseSpeedY;
+                this.opacity = Math.random() * 0.6 + 0.2;
+            }
+            update() {
+                const dx = this.x - mouse.x;
+                const dy = this.y - mouse.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 120) {
+                    const force = (120 - dist) / 120 * 0.8;
+                    this.speedX = this.baseSpeedX + (dx / dist) * force;
+                    this.speedY = this.baseSpeedY + (dy / dist) * force;
+                } else {
+                    this.speedX += (this.baseSpeedX - this.speedX) * 0.05;
+                    this.speedY += (this.baseSpeedY - this.speedY) * 0.05;
+                }
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x < -20) this.x = canvas.width + 20;
+                if (this.x > canvas.width + 20) this.x = -20;
+                if (this.y < -20) this.y = canvas.height + 20;
+                if (this.y > canvas.height + 20) this.y = -20;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = particleColor;
+                ctx.globalAlpha = this.opacity;
+                ctx.fill();
+                ctx.globalAlpha = 1;
+            }
+        }
+
+        for (let i = 0; i < NODE_COUNT; i++) nodes.push(new Node());
+
+        function drawConnections() {
+            for (let i = 0; i < nodes.length; i++) {
+                for (let j = i + 1; j < nodes.length; j++) {
+                    const dx = nodes[i].x - nodes[j].x;
+                    const dy = nodes[i].y - nodes[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < CONNECT_DIST) {
+                        const opacity = (1 - dist / CONNECT_DIST) * 0.25;
+                        ctx.beginPath();
+                        ctx.moveTo(nodes[i].x, nodes[i].y);
+                        ctx.lineTo(nodes[j].x, nodes[j].y);
+                        ctx.strokeStyle = particleColor;
+                        ctx.globalAlpha = opacity;
+                        ctx.lineWidth = 0.5;
+                        ctx.stroke();
+                        ctx.globalAlpha = 1;
+                    }
+                }
+            }
+        }
+
+        function hslToHex(h, s, l) {
+            s /= 100; l /= 100;
+            const k = n => (n + h / 30) % 12;
+            const a = s * Math.min(l, 1 - l);
+            const f = n => Math.round(255 * (l - a * Math.max(-1, Math.min(k(n) - 3, 9 - k(n), 1))));
+            return '#' + [f(0), f(8), f(4)].map(v => v.toString(16).padStart(2, '0')).join('');
+        }
+
+        // Text elements to color cycle
+        const title = document.querySelector('.drink-name');
+        const logo = document.querySelector('.logo');
+        const navLinks = document.querySelectorAll('nav a');
+        const shopBtn = document.querySelector('.shop-now .button');
+        const cardTitles = document.querySelectorAll('.about-card-title');
+        const sectionTitle = document.querySelector('.about-section-title');
+        const statValues = document.querySelectorAll('.about-stat-value');
+        const aboutCards = document.querySelectorAll('.about-card');
+        const aboutStats = document.querySelectorAll('.about-stat');
+
+        // Track hovered cards/stats for RGB border
+        const hoveredCards = new Set();
+        aboutCards.forEach(card => {
+            card.addEventListener('mouseenter', () => hoveredCards.add(card));
+            card.addEventListener('mouseleave', () => {
+                hoveredCards.delete(card);
+                card.style.borderColor = '';
+                card.style.boxShadow = '';
+            });
+        });
+        aboutStats.forEach(stat => {
+            stat.addEventListener('mouseenter', () => hoveredCards.add(stat));
+            stat.addEventListener('mouseleave', () => {
+                hoveredCards.delete(stat);
+                stat.style.borderColor = '';
+                stat.style.boxShadow = '';
+            });
+        });
+
+        function animate() {
+            hue = (hue + 0.3) % 360;
+            particleColor = hslToHex(hue, 100, 50);
+
+            // Update all text colors
+            title.style.color = particleColor;
+            title.style.textShadow = `0 0 5px ${particleColor}, 0 0 10px ${particleColor}`;
+            logo.style.color = particleColor;
+            logo.style.textShadow = `0 0 10px ${particleColor}, 0 0 20px ${particleColor}`;
+            navLinks.forEach(link => link.style.color = particleColor);
+            shopBtn.style.backgroundColor = particleColor;
+            cardTitles.forEach(t => t.style.color = particleColor);
+            if (sectionTitle) {
+                sectionTitle.style.color = particleColor;
+                sectionTitle.style.textShadow = `0 0 10px ${particleColor}`;
+            }
+            statValues.forEach(v => {
+                v.style.color = particleColor;
+                v.style.textShadow = `0 0 15px ${particleColor}`;
+            });
+
+            // Update hovered elements with RGB border/glow
+            hoveredCards.forEach(el => {
+                el.style.borderColor = particleColor;
+                el.style.boxShadow = `0 0 20px ${particleColor}40`;
+            });
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            nodes.forEach(n => n.update());
+            drawConnections();
+            nodes.forEach(n => n.draw());
+            requestAnimationFrame(animate);
+        }
+        animate();
+    });
+    </script>
+</body>
+</html>
