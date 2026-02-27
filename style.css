@@ -391,8 +391,8 @@ main {
 /* DOT INDICATORS */
 .dot-indicators {
     position: absolute;
-    bottom: -50px;
-    left: 50%;
+    bottom: -15px;
+    left: 55%;
     transform: translateX(-50%);
     display: flex;
     gap: 12px;
