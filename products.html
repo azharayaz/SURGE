@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Products - Surge</title>
     <link rel="stylesheet" href="style.css">
+    <script>if(sessionStorage.getItem('pageNavEntryDirection')){document.documentElement.style.opacity='0';}</script>
 </head>
 <body>
     <canvas id="particles"></canvas>
@@ -98,6 +99,7 @@
         </div>
     </div>
 
+    <script src="page-nav.js"></script>
     <script>
     document.addEventListener('DOMContentLoaded', () => {
         const canvas = document.getElementById('particles');
