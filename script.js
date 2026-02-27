@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const calories = document.querySelector('.stats .stat:nth-child(2) .value');
     const flavor = document.querySelector('.stats .stat:nth-child(3) .value');
     const progressBarSpan = document.querySelector('.progress-bar span');
-
     let currentSlide = 0;
     let autoSlideInterval;
 
@@ -102,9 +101,6 @@ document.addEventListener('DOMContentLoaded', () => {
         calories.textContent = drink.calories;
         flavor.textContent = drink.flavor;
 
-        const root = document.documentElement;
-        root.style.setProperty('--main-color', drink.background);
-
         drinkName.style.color = drink.background;
         drinkName.style.textShadow = `0 0 20px ${drink.background}, 0 0 40px ${drink.background}`;
 
@@ -135,59 +131,57 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // ===== TEXT ANIMATIONS =====
         const textElements = [drinkName, tagline, description];
-        textElements.forEach(el => {
-            el.style.animation = 'none'; // Reset animation
-            void el.offsetWidth; // Trigger reflow
-        });
+        textElements.forEach(el => el.style.animation = 'none');
+        void drinkName.offsetWidth; // single reflow for all
 
-        // Different animation per drink
         switch(slideIndex) {
             case 0: // VOLT
-                drinkName.style.animation = 'fadeSlideLeft 0.8s ease forwards';
-                tagline.style.animation = 'fadeSlideTop 0.8s ease forwards 0.2s';
-                description.style.animation = 'fadeSlideBottom 0.8s ease forwards 0.4s';
+                drinkName.style.animation = 'fadeSlideLeft 1s cubic-bezier(0.25, 0.1, 0.25, 1) forwards';
+                tagline.style.animation = 'fadeSlideTop 1s cubic-bezier(0.25, 0.1, 0.25, 1) forwards 0.2s';
+                description.style.animation = 'fadeSlideBottom 1s cubic-bezier(0.25, 0.1, 0.25, 1) forwards 0.4s';
                 break;
             case 1: // SURGE
-                drinkName.style.animation = 'fadeSlideRight 0.8s ease forwards';
-                tagline.style.animation = 'fadeSlideLeft 0.8s ease forwards 0.2s';
-                description.style.animation = 'fadeSlideTop 0.8s ease forwards 0.4s';
+                drinkName.style.animation = 'fadeSlideRight 1s cubic-bezier(0.25, 0.1, 0.25, 1) forwards';
+                tagline.style.animation = 'fadeSlideLeft 1s cubic-bezier(0.25, 0.1, 0.25, 1) forwards 0.2s';
+                description.style.animation = 'fadeSlideTop 1s cubic-bezier(0.25, 0.1, 0.25, 1) forwards 0.4s';
                 break;
             case 2: // BLAZE
-                drinkName.style.animation = 'fadeSlideTop 0.8s ease forwards';
-                tagline.style.animation = 'fadeSlideBottom 0.8s ease forwards 0.2s';
-                description.style.animation = 'fadeSlideLeft 0.8s ease forwards 0.4s';
+                drinkName.style.animation = 'fadeSlideTop 1s cubic-bezier(0.25, 0.1, 0.25, 1) forwards';
+                tagline.style.animation = 'fadeSlideBottom 1s cubic-bezier(0.25, 0.1, 0.25, 1) forwards 0.2s';
+                description.style.animation = 'fadeSlideLeft 1s cubic-bezier(0.25, 0.1, 0.25, 1) forwards 0.4s';
                 break;
             case 3: // FROST
-                drinkName.style.animation = 'fadeSlideBottom 0.8s ease forwards';
-                tagline.style.animation = 'fadeSlideRight 0.8s ease forwards 0.2s';
-                description.style.animation = 'fadeSlideLeft 0.8s ease forwards 0.4s';
+                drinkName.style.animation = 'fadeSlideBottom 1s cubic-bezier(0.25, 0.1, 0.25, 1) forwards';
+                tagline.style.animation = 'fadeSlideRight 1s cubic-bezier(0.25, 0.1, 0.25, 1) forwards 0.2s';
+                description.style.animation = 'fadeSlideLeft 1s cubic-bezier(0.25, 0.1, 0.25, 1) forwards 0.4s';
                 break;
             case 4: // VENOM
-                drinkName.style.animation = 'fadeSlideRight 0.8s ease forwards';
-                tagline.style.animation = 'fadeSlideBottom 0.8s ease forwards 0.2s';
-                description.style.animation = 'fadeSlideTop 0.8s ease forwards 0.4s';
+                drinkName.style.animation = 'fadeSlideRight 1s cubic-bezier(0.25, 0.1, 0.25, 1) forwards';
+                tagline.style.animation = 'fadeSlideBottom 1s cubic-bezier(0.25, 0.1, 0.25, 1) forwards 0.2s';
+                description.style.animation = 'fadeSlideTop 1s cubic-bezier(0.25, 0.1, 0.25, 1) forwards 0.4s';
                 break;
             case 5: // NOVA
-                drinkName.style.animation = 'fadeSlideTop 0.8s ease forwards';
-                tagline.style.animation = 'fadeSlideLeft 0.8s ease forwards 0.2s';
-                description.style.animation = 'fadeSlideRight 0.8s ease forwards 0.4s';
+                drinkName.style.animation = 'fadeSlideTop 1s cubic-bezier(0.25, 0.1, 0.25, 1) forwards';
+                tagline.style.animation = 'fadeSlideLeft 1s cubic-bezier(0.25, 0.1, 0.25, 1) forwards 0.2s';
+                description.style.animation = 'fadeSlideRight 1s cubic-bezier(0.25, 0.1, 0.25, 1) forwards 0.4s';
                 break;
             case 6: // TITAN
-                drinkName.style.animation = 'fadeSlideLeft 0.8s ease forwards';
-                tagline.style.animation = 'fadeSlideTop 0.8s ease forwards 0.2s';
-                description.style.animation = 'fadeSlideBottom 0.8s ease forwards 0.4s';
+                drinkName.style.animation = 'fadeSlideLeft 1s cubic-bezier(0.25, 0.1, 0.25, 1) forwards';
+                tagline.style.animation = 'fadeSlideTop 1s cubic-bezier(0.25, 0.1, 0.25, 1) forwards 0.2s';
+                description.style.animation = 'fadeSlideBottom 1s cubic-bezier(0.25, 0.1, 0.25, 1) forwards 0.4s';
                 break;
             case 7: // PHANTOM
-                drinkName.style.animation = 'fadeSlideBottom 0.8s ease forwards';
-                tagline.style.animation = 'fadeSlideTop 0.8s ease forwards 0.2s';
-                description.style.animation = 'fadeSlideRight 0.8s ease forwards 0.4s';
+                drinkName.style.animation = 'fadeSlideBottom 1s cubic-bezier(0.25, 0.1, 0.25, 1) forwards';
+                tagline.style.animation = 'fadeSlideTop 1s cubic-bezier(0.25, 0.1, 0.25, 1) forwards 0.2s';
+                description.style.animation = 'fadeSlideRight 1s cubic-bezier(0.25, 0.1, 0.25, 1) forwards 0.4s';
                 break;
         }
 
         // ===== IMAGE FLOAT GLOW =====
         const img = newSlide.querySelector('img');
         img.style.animation = 'floatDrink 3s ease-in-out infinite';
-        img.style.filter = `drop-shadow(0 0 15px ${drinks[slideIndex].background}) drop-shadow(0 0 35px ${drinks[slideIndex].background}) drop-shadow(0 0 60px ${drinks[slideIndex].background})`;
+        img.style.filter = `drop-shadow(0 0 25px ${drinks[slideIndex].background})`;
+
     }
 
     /* =========================
@@ -292,11 +286,18 @@ document.addEventListener('DOMContentLoaded', () => {
             mouse.y = e.clientY;
         });
 
+        // Throttled --main-color updater (every 5 frames instead of every frame)
+        let frameCount = 0;
+        let lastAppliedMainColor = '';
+
         // Expose color updater for slide changes
+        let targetMainColor = drinks[0].background;
+        let currentMainColor = drinks[0].background;
         const originalUpdateContent = updateContent;
         updateContent = function(slideIndex) {
             originalUpdateContent(slideIndex);
             targetColor = drinks[slideIndex].background;
+            targetMainColor = drinks[slideIndex].background;
         };
 
         class Node {
@@ -332,15 +333,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (this.y < -20) this.y = canvas.height + 20;
                 if (this.y > canvas.height + 20) this.y = -20;
             }
-            draw() {
-                if (isInExcludeZone(this.x, this.y)) return;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fillStyle = particleColor;
-                ctx.globalAlpha = this.opacity;
-                ctx.fill();
-                ctx.globalAlpha = 1;
-            }
         }
 
         for (let i = 0; i < NODE_COUNT; i++) {
@@ -348,35 +340,57 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         function drawConnections() {
+            ctx.strokeStyle = particleColor;
+            ctx.lineWidth = 0.5;
             for (let i = 0; i < nodes.length; i++) {
+                const ni = nodes[i];
+                if (isInExcludeZone(ni.x, ni.y)) continue;
                 for (let j = i + 1; j < nodes.length; j++) {
-                    const dx = nodes[i].x - nodes[j].x;
-                    const dy = nodes[i].y - nodes[j].y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    const nj = nodes[j];
+                    const dx = ni.x - nj.x;
+                    const dy = ni.y - nj.y;
+                    const distSq = dx * dx + dy * dy;
 
-                    if (dist < CONNECT_DIST) {
-                        if (isInExcludeZone(nodes[i].x, nodes[i].y) || isInExcludeZone(nodes[j].x, nodes[j].y)) continue;
-                        const opacity = (1 - dist / CONNECT_DIST) * 0.25;
+                    if (distSq < CONNECT_DIST * CONNECT_DIST) {
+                        if (isInExcludeZone(nj.x, nj.y)) continue;
+                        const dist = Math.sqrt(distSq);
+                        ctx.globalAlpha = (1 - dist / CONNECT_DIST) * 0.25;
                         ctx.beginPath();
-                        ctx.moveTo(nodes[i].x, nodes[i].y);
-                        ctx.lineTo(nodes[j].x, nodes[j].y);
-                        ctx.strokeStyle = particleColor;
-                        ctx.globalAlpha = opacity;
-                        ctx.lineWidth = 0.5;
+                        ctx.moveTo(ni.x, ni.y);
+                        ctx.lineTo(nj.x, nj.y);
                         ctx.stroke();
-                        ctx.globalAlpha = 1;
                     }
                 }
             }
+            ctx.globalAlpha = 1;
         }
 
         function animate() {
-            particleColor = lerpColor(particleColor, targetColor, 0.05);
-            updateExcludeZone();
+            particleColor = lerpColor(particleColor, targetColor, 0.12);
+            currentMainColor = lerpColor(currentMainColor, targetMainColor, 0.12);
+
+            // Only update CSS variable every 5 frames to avoid constant style recalc
+            frameCount++;
+            if (frameCount % 5 === 0 && lastAppliedMainColor !== currentMainColor) {
+                document.documentElement.style.setProperty('--main-color', currentMainColor);
+                lastAppliedMainColor = currentMainColor;
+            }
+
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             nodes.forEach(n => n.update());
             drawConnections();
-            nodes.forEach(n => n.draw());
+
+            ctx.fillStyle = particleColor;
+            for (let i = 0; i < nodes.length; i++) {
+                const n = nodes[i];
+                if (isInExcludeZone(n.x, n.y)) continue;
+                ctx.globalAlpha = n.opacity;
+                ctx.beginPath();
+                ctx.arc(n.x, n.y, n.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            ctx.globalAlpha = 1;
+
             requestAnimationFrame(animate);
         }
         animate();

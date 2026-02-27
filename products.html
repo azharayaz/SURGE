@@ -18,9 +18,7 @@
                 <li><a href="info.html">INFO</a></li>
             </ul>
         </nav>
-        <div class="shop-now">
-            <a href="#" class="button">SHOP NOW</a>
-        </div>
+        <div class="logo products-header-text"><a href="#" style="text-decoration:none;cursor:default;">PRODUCTS</a></div>
     </header>
 
     <main class="products-main">
@@ -71,6 +69,35 @@
         </section>
     </main>
 
+    <!-- Expanded Card Overlay -->
+    <div class="card-overlay" id="cardOverlay">
+        <div class="expanded-card">
+            <button class="close-card" id="closeCard">&times;</button>
+            <div class="expanded-card-image">
+                <img id="expandedImg" src="" alt="">
+            </div>
+            <div class="expanded-card-info">
+                <h2 id="expandedName"></h2>
+                <p class="expanded-tagline" id="expandedTagline"></p>
+                <p class="expanded-desc" id="expandedDesc"></p>
+                <div class="expanded-stats">
+                    <div class="expanded-stat">
+                        <span class="expanded-value" id="expandedCaffeine"></span>
+                        <span class="expanded-label">CAFFEINE</span>
+                    </div>
+                    <div class="expanded-stat">
+                        <span class="expanded-value" id="expandedCalories"></span>
+                        <span class="expanded-label">CALORIES</span>
+                    </div>
+                    <div class="expanded-stat">
+                        <span class="expanded-value" id="expandedFlavor"></span>
+                        <span class="expanded-label">FLAVOR</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
     document.addEventListener('DOMContentLoaded', () => {
         const canvas = document.getElementById('particles');
@@ -109,6 +136,7 @@
         const logo = document.querySelector('.logo');
         const navLinks = document.querySelectorAll('nav a');
         const shopBtn = document.querySelector('.shop-now .button');
+        const productsText = document.querySelector('.products-header-text a');
         const drinkColors = [
             '#00ff00', '#ff0040', '#ff4500', '#00bfff',
             '#9b30ff', '#ffd700', '#00d26a', '#e0e0e0'
@@ -121,7 +149,11 @@
                 logo.style.color = drinkColors[i];
                 logo.style.textShadow = `0 0 10px ${drinkColors[i]}, 0 0 20px ${drinkColors[i]}`;
                 navLinks.forEach(link => link.style.color = drinkColors[i]);
-                shopBtn.style.backgroundColor = drinkColors[i];
+                if (shopBtn) shopBtn.style.backgroundColor = drinkColors[i];
+                if (productsText) {
+                    productsText.style.color = drinkColors[i];
+                    productsText.style.textShadow = `0 0 10px ${drinkColors[i]}, 0 0 20px ${drinkColors[i]}`;
+                }
             });
             card.addEventListener('mouseleave', () => {
                 targetColor = defaultColor;
@@ -130,8 +162,89 @@
                 logo.style.color = defaultColor;
                 logo.style.textShadow = '';
                 navLinks.forEach(link => link.style.color = '');
-                shopBtn.style.backgroundColor = '';
+                if (shopBtn) shopBtn.style.backgroundColor = '';
+                if (productsText) {
+                    productsText.style.color = '';
+                    productsText.style.textShadow = '';
+                }
             });
+        });
+
+        /* =========================
+           EXPANDED CARD OVERLAY
+        ========================== */
+        const drinkData = [
+            { name: 'VOLT', tagline: 'ELECTRIFY YOUR LIMITS', description: 'Feel the jolt of pure electric energy. VOLT delivers a surge of power with a citrus-charged flavor that hits like lightning.', caffeine: '300MG', calories: '10', flavor: 'ELECTRIC CITRUS', color: '#00ff00' },
+            { name: 'SURGE', tagline: 'UNLEASH THE POWER', description: 'Dive into a tropical storm of flavor. SURGE combines exotic fruits with a massive energy boost.', caffeine: '250MG', calories: '15', flavor: 'TROPICAL FURY', color: '#ff0040' },
+            { name: 'BLAZE', tagline: 'IGNITE YOUR SENSES', description: 'Set your world on fire with BLAZE. A fiery fusion of spicy ginger and sweet mango.', caffeine: '280MG', calories: '12', flavor: 'MANGO GINGER', color: '#ff4500' },
+            { name: 'FROST', tagline: 'COOL, CRISP, REFRESHING', description: 'Experience the chill of victory with FROST. An icy blast of arctic berry flavor.', caffeine: '220MG', calories: '5', flavor: 'ARCTIC BERRY', color: '#00bfff' },
+            { name: 'VENOM', tagline: 'STRIKE WITHOUT WARNING', description: 'Deadly focus meets raw power. VENOM injects pure adrenaline with a dark grape punch that hits fast and hard.', caffeine: '350MG', calories: '8', flavor: 'DARK GRAPE', color: '#9b30ff' },
+            { name: 'NOVA', tagline: 'EXPLODE INTO ACTION', description: 'A supernova of energy in every sip. NOVA fuses golden passionfruit with a blinding burst of unstoppable power.', caffeine: '270MG', calories: '10', flavor: 'GOLDEN PASSIONFRUIT', color: '#ffd700' },
+            { name: 'TITAN', tagline: 'BUILT DIFFERENT', description: 'Strength beyond limits. TITAN delivers a colossal hit of raw energy with a bold blood orange kick that fuels the unstoppable.', caffeine: '320MG', calories: '12', flavor: 'BLOOD ORANGE', color: '#00d26a' },
+            { name: 'PHANTOM', tagline: 'MOVE IN SILENCE', description: 'Invisible power, undeniable results. PHANTOM gives you stealth-mode focus with a smooth midnight mint finish.', caffeine: '240MG', calories: '5', flavor: 'MIDNIGHT MINT', color: '#e0e0e0' }
+        ];
+
+        const overlay = document.getElementById('cardOverlay');
+        const expandedCard = overlay.querySelector('.expanded-card');
+        const closeBtn = document.getElementById('closeCard');
+        const expandedImg = document.getElementById('expandedImg');
+        const expandedName = document.getElementById('expandedName');
+        const expandedTagline = document.getElementById('expandedTagline');
+        const expandedDesc = document.getElementById('expandedDesc');
+        const expandedCaffeine = document.getElementById('expandedCaffeine');
+        const expandedCalories = document.getElementById('expandedCalories');
+        const expandedFlavor = document.getElementById('expandedFlavor');
+
+        // Attach click to each ORDER NOW button
+        cards.forEach((card, i) => {
+            const orderBtn = card.querySelector('.button');
+            orderBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const drink = drinkData[i];
+                const imgSrc = card.querySelector('img').src;
+
+                // Set theme colors
+                expandedCard.style.setProperty('--ec-color', drink.color);
+                expandedCard.style.setProperty('--ec-bg', drink.color + '10');
+                expandedCard.style.setProperty('--ec-glow', drink.color + '40');
+                expandedCard.style.borderColor = drink.color;
+
+                // Fill content
+                expandedImg.src = imgSrc;
+                expandedImg.alt = drink.name;
+                expandedName.textContent = drink.name;
+                expandedTagline.textContent = drink.tagline;
+                expandedDesc.textContent = drink.description;
+                expandedCaffeine.textContent = drink.caffeine;
+                expandedCalories.textContent = drink.calories;
+                expandedFlavor.textContent = drink.flavor;
+
+                // Show overlay
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        // Close button
+        closeBtn.addEventListener('click', () => {
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+
+        // Click outside to close
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Escape key to close
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && overlay.classList.contains('active')) {
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
         });
 
         function resizeCanvas() {
