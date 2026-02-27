@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const drinks = [
         {
-            name: 'VOLT',
+            name: 'VOILT',
             tagline: 'ELECTRIFY YOUR LIMITS',
             description: 'Feel the jolt of pure electric energy. VOLT delivers a surge of power with a citrus-charged flavor that hits like lightning.',
             caffeine: '300MG',
