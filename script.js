@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const caffeine = document.querySelector('.stats .stat:nth-child(1) .value');
     const calories = document.querySelector('.stats .stat:nth-child(2) .value');
     const flavor = document.querySelector('.stats .stat:nth-child(3) .value');
+    const dots = document.querySelectorAll('.dot');
     const progressBarSpan = document.querySelector('.progress-bar span');
     let currentSlide = 0;
     let autoSlideInterval;
@@ -104,11 +105,17 @@ document.addEventListener('DOMContentLoaded', () => {
         drinkName.style.color = drink.background;
         drinkName.style.textShadow = `0 0 20px ${drink.background}, 0 0 40px ${drink.background}`;
 
+        // Update dots
+        dots.forEach((dot, i) => {
+            dot.classList.toggle('active', i === slideIndex);
+        });
+
+        // Update progress bar
         const current = String(slideIndex + 1).padStart(2, '0');
         const total = String(slides.length).padStart(2, '0');
         progressBarSpan.textContent = `${current} / ${total}`;
         const progress = ((slideIndex + 1) / slides.length) * 100;
-        document.querySelector('.bar').style.setProperty('--progress', progress + "%");
+        document.querySelector('.bar').style.setProperty('--progress', progress + '%');
 
         document.body.style.transition = "background-image 1s ease-in-out";
         document.body.style.backgroundImage = drink.backgroundImage;
@@ -217,6 +224,14 @@ document.addEventListener('DOMContentLoaded', () => {
     prev.addEventListener('click', () => {
         prevSlideFunc();
         resetAutoSlide();
+    });
+
+    dots.forEach((tab, i) => {
+        tab.addEventListener('click', () => {
+            currentSlide = i;
+            showSlide(currentSlide);
+            resetAutoSlide();
+        });
     });
 
     /* =========================
